@@ -17,7 +17,9 @@ export class UsersService {
   async findAllUsers(): Promise<User[]> {
     return this.userModel.find().exec();
   }
-
+  async getUser(userId: string): Promise<User> {
+    return this.userModel.findOne({ userId });
+  }
   async blockUser(userId: string): Promise<User | null> {
     return this.userModel
       .findByIdAndUpdate(userId, { is_blocked: true }, { new: true })
@@ -28,5 +30,10 @@ export class UsersService {
     return this.userModel
       .findByIdAndUpdate(userId, { blocked: false }, { new: true })
       .exec();
+  }
+
+  async deleteUser(userId: string): Promise<any> {
+    const deletedUser = this.userModel.deleteOne({ userId });
+    return deletedUser;
   }
 }
